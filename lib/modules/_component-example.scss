@@ -101,18 +101,65 @@
   .tna-accordion {
     margin-top: 0;
 
+    display: grid;
+    grid-template-columns: repeat(3, min-content) 1fr;
+    grid-template-rows: 1fr;
+    gap: 0 1px;
+
+    column-rule: 1px solid var(--keyline);
+
+    @include colour.colour-border("keyline", 1px, solid, top);
+
     &__heading,
     &__body {
       padding: spacing.space(1);
     }
 
+    &:has(.tna-accordion__summary[aria-expanded="true"]) {
+      &::before {
+        content: "";
+
+        grid-column: 4 / 5;
+        grid-row: 1;
+        @include colour.colour-border("keyline", 1px, solid, bottom);
+      }
+
+      .tna-accordion__summary {
+        border-bottom: 1px transparent solid;
+
+        &::after {
+          bottom: -1px;
+        }
+
+        &[aria-expanded="false"] {
+          @include colour.colour-border("keyline");
+        }
+      }
+    }
+
+    &__summary {
+      padding-inline: spacing.space(1);
+
+      &::before {
+        display: none;
+      }
+    }
+
     &__content {
-      .tna-details + .tna-code-block {
+      grid-column: 1 / 5;
+      grid-row: 2;
+
+      .tna-details + .tna-code-block,
+      .tna-warning + .tna-code-block {
         margin-top: spacing.space(1);
       }
     }
 
     &__details {
+      grid-row: 1;
+
+      display: contents;
+
       &:last-child {
         border-bottom: none;
       }
